@@ -25,9 +25,8 @@ actually drives heating/cooling decisions.
 import os
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
-# ── Constants ─────────────────────────────────────────────────────────────────
+#Constants
 
 RANDOM_SEED = 42
 TEST_SIZE   = 0.20
@@ -55,7 +54,7 @@ MILD_CSV = os.path.join(_HERE, 'Final_mild_data.csv')
 WARM_CSV = os.path.join(_HERE, 'Final_warm_data.csv')
 
 
-# ── Feature engineering helpers ───────────────────────────────────────────────
+# Feature engineering helpers
 
 def add_apparent_temperature(df):
     """
@@ -121,23 +120,29 @@ def load_data():
 
 def split_data(df):
     """
-    Split a DataFrame into 80 % training and 20 % test sets.
+    Split a DataFrame into 80 % training and 20 % test sets using a
+    chronological split: the first 80 % of rows (by time) are used for
+    training and the last 20 % are held out for testing.
 
-    The fixed random seed means every model file receives the same split,
-    making test-set comparisons between models fair.
+    This is more realistic than a random split for time-series data —
+    it tests whether the model generalises to future unseen periods rather
+    than just interpolating between known data points.
 
     Returns
     -------
     X_train, X_test : pd.DataFrame
     y_train, y_test : pd.Series
     """
-    X = df[FEATURE_COLS].copy()
-    y = df[TARGET_COL].copy()
+    df_sorted = df.sort_values('Time').reset_index(drop=True)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y,
-        test_size=TEST_SIZE,
-        random_state=RANDOM_SEED,
-    )
+    split_idx = int(len(df_sorted) * (1 - TEST_SIZE))
+
+    train = df_sorted.iloc[:split_idx]
+    test  = df_sorted.iloc[split_idx:]
+
+    X_train = train[FEATURE_COLS]
+    y_train = train[TARGET_COL]
+    X_test  = test[FEATURE_COLS]
+    y_test  = test[TARGET_COL]
 
     return X_train, X_test, y_train, y_test
