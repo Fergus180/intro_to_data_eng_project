@@ -34,9 +34,8 @@ def fit_random_forest(zone_label, df):
 
     Returns the fitted model, test R², and test RMSE.
     """
-    print("=" * 65)
     print(f"RANDOM FOREST : {zone_label}")
-    print("=" * 65)
+
 
     X_train, X_test, y_train, y_test = split_data(df)
 
@@ -58,7 +57,7 @@ def fit_random_forest(zone_label, df):
     print(importance_df.to_string(index=False))
     print()
 
-    # ── Permutation importances (test set) ──
+    # Permutation importances (test set)
     perm = permutation_importance(
         rf, X_test, y_test,
         n_repeats=10,
@@ -75,7 +74,7 @@ def fit_random_forest(zone_label, df):
     print(perm_df.to_string(index=False))
     print()
 
-    # ── Test-set evaluation ──
+    # Test-set evaluation
     y_pred = rf.predict(X_test)
 
     r2   = r2_score(y_test, y_pred)
@@ -101,8 +100,7 @@ if __name__ == '__main__':
         'Zone 5 — Warm Temperate (Newcastle)', warm_df
     )
 
-    print("=" * 65)
+
     print("SUMMARY COMPARISON")
-    print("=" * 65)
     print(f"  Mild (Sydney)     R²: {mild_r2:.4f}   RMSE: {mild_rmse:.6f}")
     print(f"  Warm (Newcastle)  R²: {warm_r2:.4f}   RMSE: {warm_rmse:.6f}")
