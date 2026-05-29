@@ -113,7 +113,7 @@ def fit_ols(zone_label, df):
     vif_df = compute_vif(X_train)
     print(vif_df.to_string(index=False))
     print("  Tip: VIF > 10 flags multicollinearity.")
-    print("  Temperature and Temperature_sq will be high — this is expected.")
+    print("  hour_sin and hour_cos may be moderately correlated — this is expected")
     print()
 
     # ── Test-set evaluation ──
