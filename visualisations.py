@@ -45,7 +45,6 @@ from data_utils import load_data, split_data, FEATURE_COLS, TARGET_COL
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 
-os.makedirs('figures', exist_ok=True)
 
 COLOUR_MILD = '#2196F3'   # blue  — Zone 6, Sydney
 COLOUR_WARM = '#F44336'   # red   — Zone 5, Newcastle
@@ -61,7 +60,7 @@ plt.rcParams.update({'figure.dpi': 150, 'font.size': 10})
 # ── Tiny helpers ──────────────────────────────────────────────────────────────
 
 def savefig(name):
-    path = os.path.join('figures', f'{name}.png')
+    path = os.path.join('figuresv2', f'{name}.png')
     plt.savefig(path, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {path}")
