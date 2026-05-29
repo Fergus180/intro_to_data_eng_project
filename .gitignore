@@ -1,0 +1,6 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated figures (re-run visualisations.py to reproduce)
+figures/
